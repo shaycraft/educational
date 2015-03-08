@@ -1,26 +1,43 @@
 <!DOCTYPE html>
-<html ng-app>
+<html ng-app="fbTestApp">
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
     <script src="https://cdn.firebase.com/js/client/2.2.1/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/1.0.0/angularfire.min.js"></script>
     <script type="text/javascript"  src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
-            var ref = new Firebase('https://publicdata-weather.firebaseio.com/denver/currently/temperature');
-            ref.on("value", function(snapshot) {
-                var x = snapshot.val();
-                console.log(x);
-                $('#currTemp').val(x)
-                console.log($('#currTemp').val());
+
+
+        // define our app and dependencies (remember to include firebase!)
+        var app = angular.module("fbTestApp", ["firebase"]);
+        console.log('blah');
+        // this factory returns a synchronized array of chat messages
+        app.factory("currentTemperature", ["$firebaseArray",
+            function($firebaseArray) {
+                // create a reference to the Firebase where we will store our data
+                var ref = new Firebase('https://publicdata-weather.firebaseio.com/denver/currently/temperature');
+
+                // this uses AngularFire to create the synchronized array
+                return $firebaseArray(ref);
+            }
+        ]);
+        console.log('blah2');
+        app.controller('fbController', ['$scope', 'currentTemperature', function($scope, currentTemperature) {
+            $scope.ctemp = currentTemperature;
+
+            $scope.ctemp.$loaded(function() {
+                console.log('loaded');
+               console.log($scope.ctemp);
             });
-        });
+        }]);
+
     </script>
 </head>
 <body>
-<input type="hidden" ng-model="currTemp" id="currTemp" />
-<input type="text" ng-model="fucker" />
-<h1>The current temperature is {{currTemp}}, {{fucker}}</h1>
+<div ng-controller="fbController">
+    <h1 ng-model="currentTemperature">The current temperature is {{ctemp}}</h1>
+</div>
 </body>
 </html>
