@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="fbTestApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Angular deferred test</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="https://cdn.firebase.com/js/client/2.2.1/firebase.js"></script>
+    <script type="text/javascript">
+        angular.module('fbTestApp', []).controller('fbTestController', ['$scope', '$q', function($scope, $q) {
+            $scope.var1 = 'this is just a test';
+
+            function asyncLookupTemp() {
+                var deferred = $q.defer()
+                deferred.notify('Initiating firebase call');
+                var ref = new Firebase('https://publicdata-weather.firebaseio.com/denver/currently/temperature');
+                ref.on('value', function(snap) {
+                    deferred.resolve(snap.val());
+                });
+
+                return deferred.promise;
+            }
+
+            var promise = asyncLookupTemp();
+            promise.then(function(data) {
+               $scope.currentTemp = data;
+            }, function(reason) {
+                $scope.currentTemp = 'Failed ' + reason;
+            }, function(update) {
+                $scope.currentTemp = 'Got notification ' + update;
+            });
+        }]);
+    </script>
+</head>
+<body>
+<div ng-controller="fbTestController">
+    <span>Var1 = {{var1}}</span>
+    <span>Current temperature is {{currentTemp}}</span>
+</div>
+</body>
+</html>
