@@ -10,7 +10,10 @@
             $scope.var1 = 'this is just a test';
 
             function asyncLookupList() {
+                var deferred = $q.defer();
+                deferred.notify('Initiating whole feed call');
                 var ref = new Firebase('https://publicdata-weather.firebaseio.com/denver/currently');
+
                 ref.on('value', function(snap) {
                     var feed = snap.val();
                     var items = [];
@@ -18,8 +21,9 @@
                     {
                         items.push({category: p, text: feed[p]});
                     }
-                    console.log(items);
+                    deferred.resolve(items);
                 });
+                return deferred.promise;
             }
 
             function asyncLookupTemp() {
@@ -43,7 +47,14 @@
                 $scope.currentTemp = 'Got notification ' + update;
             });
 
-            asyncLookupList();
+            var promiseFeed = asyncLookupList();
+            promiseFeed.then(function(data) {
+                $scope.feedItems = data;
+            }, function(reason) {
+                $scope.status = 'Failed' + reason;
+            }, function(update) {
+                $scope.status = 'Got notification ' + update;
+            });
         }]);
     </script>
 </head>
@@ -51,6 +62,9 @@
 <div ng-controller="fbTestController">
     <span>Var1 = {{var1}}</span>
     <span>Current temperature is {{currentTemp}}</span>
+    <ul>
+        <li ng-repeat="f in feedItems"><b>{{f.category}}</b>, {{f.text}}</li>
+    </ul>
 </div>
 </body>
 </html>
