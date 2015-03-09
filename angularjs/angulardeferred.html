@@ -9,10 +9,24 @@
         angular.module('fbTestApp', []).controller('fbTestController', ['$scope', '$q', function($scope, $q) {
             $scope.var1 = 'this is just a test';
 
+            function asyncLookupList() {
+                var ref = new Firebase('https://publicdata-weather.firebaseio.com/denver/currently');
+                ref.on('value', function(snap) {
+                    var feed = snap.val();
+                    var items = [];
+                    for (var p in feed)
+                    {
+                        items.push({category: p, text: feed[p]});
+                    }
+                    console.log(items);
+                });
+            }
+
             function asyncLookupTemp() {
-                var deferred = $q.defer()
+                var deferred = $q.defer();
                 deferred.notify('Initiating firebase call');
                 var ref = new Firebase('https://publicdata-weather.firebaseio.com/denver/currently/temperature');
+
                 ref.on('value', function(snap) {
                     deferred.resolve(snap.val());
                 });
@@ -28,6 +42,8 @@
             }, function(update) {
                 $scope.currentTemp = 'Got notification ' + update;
             });
+
+            asyncLookupList();
         }]);
     </script>
 </head>
