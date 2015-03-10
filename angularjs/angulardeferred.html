@@ -13,6 +13,10 @@
             {
                 console.log($scope.selectedCity);
                 $scope.feedItems = [];
+                var promise = asyncLookupList($scope.selectedCity);
+                promise.then(function(data) {
+                   $scope.feedItems = data;
+                });
             }
 
             function asyncLookupCities() {
@@ -32,10 +36,15 @@
                 return deferred.promise;
             }
 
-            function asyncLookupList() {
+            function asyncLookupList(city) {
+                if (city===undefined)
+                {
+                    city = "denver"
+                }
                 var deferred = $q.defer();
                 deferred.notify('Initiating whole feed call');
-                var ref = new Firebase('https://publicdata-weather.firebaseio.com/denver/currently');
+                console.log('city = ' + city);
+                var ref = new Firebase('https://publicdata-weather.firebaseio.com/' + city + '/currently');
 
                 ref.on('value', function(snap) {
                     var feed = snap.val();
