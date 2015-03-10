@@ -9,6 +9,29 @@
         angular.module('fbTestApp', []).controller('fbTestController', ['$scope', '$q', function($scope, $q) {
             $scope.var1 = 'this is just a test';
 
+            $scope.selectAction = function()
+            {
+                console.log($scope.selectedCity);
+                $scope.feedItems = [];
+            }
+
+            function asyncLookupCities() {
+                var deferred = $q.defer();
+                deferred.notify('Initiating city lookup');
+                var ref=new Firebase('https://publicdata-weather.firebaseio.com');
+
+                ref.on('value', function(snap) {
+                    var feed = snap.val();
+                    var cities = [];
+                    for (var c in feed)
+                    {
+                        cities.push(c);
+                    }
+                    deferred.resolve(cities);
+                });
+                return deferred.promise;
+            }
+
             function asyncLookupList() {
                 var deferred = $q.defer();
                 deferred.notify('Initiating whole feed call');
@@ -55,6 +78,12 @@
             }, function(update) {
                 $scope.status = 'Got notification ' + update;
             });
+
+
+            var citiesFeed = asyncLookupCities();
+            citiesFeed.then(function(data) {
+                $scope.feedCities = data;
+            });
         }]);
     </script>
 </head>
@@ -62,6 +91,11 @@
 <div ng-controller="fbTestController">
     <span>Var1 = {{var1}}</span>
     <span>Current temperature is {{currentTemp}}</span>
+    <br />
+    <select ng-change="selectAction()" ng-model="selectedCity">
+        <option value="">Select City:</option>
+        <option ng-repeat="c in feedCities" value="{{c}}">{{c}}</option>
+    </select>
     <ul>
         <li ng-repeat="f in feedItems"><b>{{f.category}}</b>, {{f.text}}</li>
     </ul>
