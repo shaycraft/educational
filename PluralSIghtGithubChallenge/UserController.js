@@ -1,8 +1,8 @@
 ﻿(function () {
 
-    var app = angular.module("githubViewer", []);
+    var app = angular.module("githubViewer");
 
-    var MainController = function (
+    var UserController = function (
         $scope, github, $interval,
         $log, $anchorScroll, $location) {
 
@@ -51,6 +51,7 @@
 
     };
 
-    app.controller("MainController", MainController);
+    app.controller("USerController", [ '$scope', 'github', '$interval',
+        '$log', '$anchorScroll', '$location', UserController]);
 
 })();

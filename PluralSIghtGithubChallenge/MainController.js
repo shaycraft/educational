@@ -1,6 +1,6 @@
 (function () {
 
-    var app = angular.module("githubViewer", []);
+    var app = angular.module("githubViewer");
 
     var MainController = function (
         $scope, $interval, $location) {
@@ -31,6 +31,6 @@
 
     };
 
-    app.controller("MainController", MainController);
+    app.controller("MainController", ['$scope', '$interval', '$location', MainController]);
 
 })();
