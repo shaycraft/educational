@@ -1,12 +1,18 @@
-﻿(function () {
+﻿(function(){
+
     var app = angular.module("githubViewer", ["ngRoute"]);
 
-    app.config(function ($routeProvider) {
+    app.config(function($routeProvider){
         $routeProvider
-        .when("/main", {
-            templateUrl: "main.html",
-            controller: "MainController"
-        })
-        .otherwise({ redirectTo: "/main" });
+            .when("/main", {
+                templateUrl: "main.html",
+                controller: "MainController"
+            })
+            .when("/user/:username", {
+                templateUrl: "user.html",
+                controller: "UserController"
+            })
+            .otherwise({redirectTo:"/main"});
     });
-})();
+
+}());

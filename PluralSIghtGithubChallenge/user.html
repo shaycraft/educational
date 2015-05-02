@@ -1,5 +1,6 @@
-<div id="userDetails">
+<div>
     <h2>{{user.name}}</h2>
+    {{ error }}
     <img ng-src="http://www.gravatar.com/avatar/{{user.gravatar_id}}" title="{{user.name}}">Order:
     <select ng-model="repoSortOrder">
         <option value="+name">Name</option>
@@ -25,3 +26,4 @@
         </tr>
     </tbody>
 </table>
+<a href="#/main">Back to search</a>

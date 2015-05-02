@@ -2,8 +2,7 @@
 
     var app = angular.module("githubViewer");
 
-    var MainController = function (
-        $scope, $interval, $location) {
+    var MainController = function ($scope, $interval, $location) {
 
         var decrementCountdown = function () {
             $scope.countdown -= 1;
@@ -22,6 +21,8 @@
                 $interval.cancel(countdownInterval);
                 $scope.countdown = null;
             }
+            console.log("about to go to user " + username);
+            $location.path("/user/" + username);
         };
 
         $scope.username = "angular";
