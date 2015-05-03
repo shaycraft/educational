@@ -21,7 +21,6 @@
         $scope.username = $routeParams.username;
         $scope.repoSortOrder = "-stargazers_count";
         github.getUser($scope.username).then(onUserComplete, onError);
-        $scope.jewmessage = "What are Jews?";
 
         $scope.getRepoUrl = function(username, reponame) {
             $location.path("/repo/" + username + "/" + reponame);
