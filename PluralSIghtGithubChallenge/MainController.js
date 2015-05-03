@@ -21,7 +21,6 @@
                 $interval.cancel(countdownInterval);
                 $scope.countdown = null;
             }
-            console.log("about to go to user " + username);
             $location.path("/user/" + username);
         };
 

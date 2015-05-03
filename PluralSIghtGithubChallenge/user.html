@@ -9,7 +9,6 @@
     </select>
 </div>
 
-
 <table>
     <thead>
         <tr>
@@ -20,7 +19,7 @@
     </thead>
     <tbody>
         <tr ng-repeat="repo in repos | orderBy:repoSortOrder">
-            <td>{{repo.name}}</td>
+            <td><a href="javascript:void(0);" ng-click="getRepoUrl(user.name, repo.name)">{{repo.name}}</a></td>
             <td>{{repo.stargazers_count | number}}</td>
             <td>{{repo.language}}</td>
         </tr>

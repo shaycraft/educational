@@ -15,10 +15,16 @@
                             return response.data;
                         });
       };
+
+      var getRepoDetails = function(username, reponame) {
+        console.log('to be implemented');
+          // example url: https://api.github.com/repos/angular/angular
+      };
       
       return {
           getUser: getUser,
-          getRepos: getRepos
+          getRepos: getRepos,
+          getRepoDetails: getRepoDetails
       };
         
     };
