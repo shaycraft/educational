@@ -6,6 +6,9 @@
 
         var decrementCountdown = function () {
             $scope.countdown -= 1;
+            if ($scope.countdown <= 10) {
+                $scope.countdown_message = $scope.countdown + " seconds left";
+            }
             if ($scope.countdown < 1) {
                 $scope.search($scope.username);
             }
@@ -25,7 +28,7 @@
         };
 
         $scope.username = "angular";
-        $scope.countdown = 5;
+        $scope.countdown = 20;
         startCountdown();
 
 
