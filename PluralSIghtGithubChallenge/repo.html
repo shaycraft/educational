@@ -1,4 +1,10 @@
 <div>
     <h2>{{ username }} / {{ reponame }}</h2>
-    Issues: {{ issuecount }}
+    {{error}}
+    Issues: {{ repodetails.open_issues_count }}
+</div>
+<div>
+    <ul>
+        <li ng-repeat="contributor in contributors"><a target="_blank" ng-href="{{contributor.html_url}}"><img ng-src="{{contributor.avatar_url}}&s=48" /></a>{{contributor.login}}</li>
+    </ul>
 </div>
