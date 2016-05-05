@@ -38,22 +38,13 @@ def miller_rabin(n, k):
     vals = calc_p2(n - 1)
     r = vals['r']
     d = vals['d']
-    print "DEBUG:  r = {0}, d = {1}".format(r, d)
     for i in range(0, k):
-        #a = random.choice([x for x in range(2, n - 1)])
         a = random.randrange(2, n-1)
-        print "random a = {0}".format(a)
-        # the following should be improved with repeated squaring-modular exponentiation for real-world usage
-        #x = pow(a, d) % n
         x = modular_pow(a, d, n)
-        print "DEBUG:  modular_power(a, d, n) = {0}".format(x)
         if x != 1 and x != n - 1:
             stop = False
             for j in range(0, r - 1):
-                #x = pow(x, 2) % n
                 x = modular_pow(x, 2, n)
-                print "DEBUG:  modular_pow(x, 2, n) = {0}".format(x)
-                #this following is not right, conside num = 41 or num = 67,280,421,310,721
                 if x == 1:
                     return "x == 1 Composite"
                 if x == n - 1:
@@ -63,6 +54,6 @@ def miller_rabin(n, k):
                 return "stop Composite"
     return "probably prime"
 
-
-print miller_rabin(long('41'), 60)
-#print modular_pow(4, 13, 497)
+while True:
+    in_str = input('N = ')
+    print miller_rabin(long(in_str), 60)
