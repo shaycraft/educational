@@ -55,5 +55,5 @@ def miller_rabin(n, k):
     return "probably prime"
 
 while True:
-    in_str = input('N = ')
-    print miller_rabin(long(in_str), 60)
+    in_str = str(raw_input('N = '))
+    print miller_rabin(long(in_str.replace(',', '')), 60)
